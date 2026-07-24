@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KHMATH-1151ASP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>KHMATH-1151ASP</h2>
+                <p>線上題庫系統</p>
+                <div class="sidebar-disclaimer">
+                    題目資料取自「康軒出版社」<br>
+                    網站內容僅限用於孩子學習使用<br>
+                    <span style="color: #FF8A8A; font-weight: 700;">切勿用於商業行為</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="sidebarNav">
+                <!-- Navigation items will be injected here via JS -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-titles">
+                    <h1 id="unitTitle">請選擇學習單</h1>
+                    <h3 id="sectionTitle"></h3>
+                </div>
+                <div class="header-actions">
+                    <button id="toggleAllBtn" class="btn btn-primary" style="display: none;">
+                        顯示全部答案
+                    </button>
+                </div>
+            </header>
+
+            <div class="worksheet-container" id="worksheetContainer">
+                <div class="empty-state">
+                    <div class="empty-icon">📚</div>
+                    <p>點擊左側選單選擇單元與小節，開始您的數學練習！</p>
+                </div>
+                <!-- Questions will be injected here via JS -->
+            </div>
+        </main>
+        
+        <!-- Watermarks -->
+        <div class="watermark watermark-top-right">網站建立自楊家驊老師</div>
+        <div class="watermark watermark-bottom-right">網站建立自楊家驊老師</div>
+    </div>
+    
+    <script type="module" src="app.js"></script>
+</body>
+</html>
