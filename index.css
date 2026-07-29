@@ -478,7 +478,7 @@ body {
     max-height: 96vh;
     overflow-y: auto;
     position: relative;
-    padding: 4vw; /* 邊距也隨螢幕自適應 */
+    padding: 4vmin; /* 邊距改用 vmin，避免橫向螢幕時上下邊距過大 */
     transform: scale(0.92) translateY(20px);
     transition: transform var(--transition-base);
 }
@@ -489,8 +489,8 @@ body {
 
 .modal-close-btn {
     position: absolute;
-    top: 2vw;
-    right: 2vw;
+    top: 2vmin;
+    right: 2vmin;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -526,7 +526,7 @@ body {
 }
 
 .modal-body .modal-question-text {
-    font-size: calc(2.4rem + 1.35vw); /* 字體改為 0.9 倍 */
+    font-size: calc(2.4rem + 1.35vmin); /* 改用 vmin 避免橫向時過度放大 */
     font-weight: 500;
     line-height: 1.8;
     color: var(--text-main);
@@ -536,7 +536,7 @@ body {
 
 /* 放大數學方程式 (KaTeX) */
 .modal-body .katex {
-    font-size: calc(1.5em + 1.1vw);
+    font-size: calc(1.5em + 1.1vmin);
 }
 
 .modal-body .modal-question-image {
@@ -548,6 +548,12 @@ body {
     border-radius: var(--radius-md);
     margin: 0 auto 38px auto; /* 置中並保留下方邊距 */
     display: block;
+}
+
+@media (orientation: landscape) {
+    .modal-body .modal-question-image {
+        max-height: 40vh; /* 橫向時更嚴格限制高度，避免被擠出框格 */
+    }
 }
 
 .modal-body .modal-answer-section {
@@ -563,7 +569,7 @@ body {
 }
 
 .modal-body .modal-answer-text {
-    font-size: calc(2.2rem + 1.35vw); /* 字體改為 0.9 倍 */
+    font-size: calc(2.2rem + 1.35vmin); /* 改用 vmin 避免橫向時過大 */
     font-weight: 600;
     color: var(--answer-color);
     line-height: 1.8;
@@ -584,6 +590,12 @@ body {
     border-radius: var(--radius-md);
     margin: 20px auto 0 auto; /* 置中並保留上方邊距 */
     display: none;
+}
+
+@media (orientation: landscape) {
+    .modal-body .modal-answer-image {
+        max-height: 35vh; /* 橫向時更嚴格限制高度 */
+    }
 }
 
 .modal-body .modal-answer-image.visible {
