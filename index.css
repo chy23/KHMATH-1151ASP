@@ -524,7 +524,7 @@ body {
 }
 
 .modal-body .modal-question-text {
-    font-size: calc(2.4rem + 1.35vw); /* 縮小為目前的 0.9 倍 */
+    font-size: calc(2.2rem + 1.2vw); /* 字體縮小為 0.8 倍 */
     font-weight: 500;
     line-height: 1.8;
     color: var(--text-main);
@@ -534,7 +534,7 @@ body {
 
 /* 放大數學方程式 (KaTeX) */
 .modal-body .katex {
-    font-size: calc(1.5em + 1.1vw);
+    font-size: calc(1.3em + 1vw);
 }
 
 .modal-body .modal-question-image {
@@ -557,7 +557,7 @@ body {
 }
 
 .modal-body .modal-answer-text {
-    font-size: calc(2.2rem + 1.35vw); 
+    font-size: calc(1.9rem + 1.2vw); /* 字體縮小為 0.8 倍 */
     font-weight: 600;
     color: var(--answer-color);
     line-height: 1.8;
