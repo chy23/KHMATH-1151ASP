@@ -513,51 +513,51 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background: var(--primary);
     color: white;
-    font-size: 1.8rem;
+    font-size: 2.7rem;
     font-weight: 700;
-    margin-bottom: 24px;
+    margin-bottom: 30px;
 }
 
 .modal-body .modal-question-text {
-    font-size: calc(1.8rem + 1vw); /* 字體隨視窗寬度超級放大 */
+    font-size: calc(2.7rem + 1.5vw); /* 放大 1.5 倍 */
     font-weight: 500;
     line-height: 1.8;
     color: var(--text-main);
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     white-space: pre-line;
 }
 
-/* 放大數學方程式 (KaTeX) */
+/* 放大數學方程式 (KaTeX) 1.5 倍 */
 .modal-body .katex {
-    font-size: calc(1.1em + 0.8vw);
+    font-size: calc(1.65em + 1.2vw);
 }
 
 .modal-body .modal-question-image {
     max-width: 100%;
     border-radius: var(--radius-md);
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     display: block;
 }
 
 .modal-body .modal-answer-section {
     border-top: 1px solid var(--border-color);
-    padding-top: 30px;
-    margin-top: 24px;
+    padding-top: 40px;
+    margin-top: 30px;
 }
 
 .modal-body .modal-toggle-btn {
-    margin-bottom: 24px;
-    font-size: 1.4rem;
-    padding: 12px 24px;
+    margin-bottom: 30px;
+    font-size: 2.1rem; /* 按鈕也放大 1.5 倍 */
+    padding: 18px 36px;
 }
 
 .modal-body .modal-answer-text {
-    font-size: calc(1.6rem + 1vw); /* 答案字體隨視窗寬度超級放大 */
+    font-size: calc(2.4rem + 1.5vw); /* 答案放大 1.5 倍 */
     font-weight: 600;
     color: var(--answer-color);
     line-height: 1.8;
