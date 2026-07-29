@@ -540,11 +540,11 @@ body {
 }
 
 .modal-body .modal-question-image {
+    width: 100%; /* 強制填滿寬度以達成放大效果 */
     max-width: 100%;
-    max-height: 55vh; /* 限制最高高度，避免把畫面撐爆 */
-    width: auto;
+    max-height: 55vh; /* 嚴格遵守最高高度 */
     height: auto;
-    object-fit: contain;
+    object-fit: contain; /* 確保圖片不變形且不超出邊界 */
     border-radius: var(--radius-md);
     margin: 0 auto 38px auto; /* 置中並保留下方邊距 */
     display: block;
@@ -576,11 +576,11 @@ body {
 }
 
 .modal-body .modal-answer-image {
+    width: 100%; /* 強制填滿寬度以達成放大效果 */
     max-width: 100%;
-    max-height: 50vh; /* 限制最高高度 */
-    width: auto;
+    max-height: 50vh; /* 嚴格遵守最高高度 */
     height: auto;
-    object-fit: contain;
+    object-fit: contain; /* 確保圖片不變形且不超出邊界 */
     border-radius: var(--radius-md);
     margin: 20px auto 0 auto; /* 置中並保留上方邊距 */
     display: none;
