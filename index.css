@@ -471,12 +471,12 @@ body {
     background: var(--bg-card);
     border-radius: var(--radius-xl);
     box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-    max-width: 780px;
+    max-width: 92vw; /* 改為隨視窗大小動態改變，最大 92% 寬度 */
     width: 100%;
-    max-height: 88vh;
+    max-height: 92vh;
     overflow-y: auto;
     position: relative;
-    padding: 40px;
+    padding: 50px;
     transform: scale(0.92) translateY(20px);
     transition: transform var(--transition-base);
 }
@@ -487,14 +487,14 @@ body {
 
 .modal-close-btn {
     position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 36px;
-    height: 36px;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     background: var(--bg-main);
     border: none;
-    font-size: 1rem;
+    font-size: 1.4rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -513,44 +513,51 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: var(--primary);
     color: white;
-    font-size: 1rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .modal-body .modal-question-text {
-    font-size: 1.2rem;
+    font-size: 1.8rem; /* 字體大幅放大 */
     font-weight: 500;
     line-height: 1.8;
     color: var(--text-main);
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     white-space: pre-line;
+}
+
+/* 放大數學方程式 (KaTeX) */
+.modal-body .katex {
+    font-size: 1.15em;
 }
 
 .modal-body .modal-question-image {
     max-width: 100%;
     border-radius: var(--radius-md);
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     display: block;
 }
 
 .modal-body .modal-answer-section {
     border-top: 1px solid var(--border-color);
-    padding-top: 20px;
-    margin-top: 10px;
+    padding-top: 24px;
+    margin-top: 20px;
 }
 
 .modal-body .modal-toggle-btn {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    padding: 10px 20px;
 }
 
 .modal-body .modal-answer-text {
-    font-size: 1.1rem;
+    font-size: 1.6rem; /* 答案字體大幅放大 */
     font-weight: 600;
     color: var(--answer-color);
     line-height: 1.8;
@@ -565,7 +572,7 @@ body {
 .modal-body .modal-answer-image {
     max-width: 100%;
     border-radius: var(--radius-md);
-    margin-top: 12px;
+    margin-top: 16px;
     display: none;
 }
 
