@@ -317,21 +317,22 @@ body {
 .question-number {
     background: var(--primary-light);
     color: var(--primary);
-    width: 28px;
-    height: 28px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 1rem;
     margin-right: 12px;
     flex-shrink: 0;
 }
 
 .question-text {
-    font-size: 1.05rem;
+    font-size: 1.25rem;
     font-weight: 500;
+    line-height: 1.6;
     white-space: pre-line;
 }
 
@@ -367,7 +368,8 @@ body {
 .answer-text {
     color: var(--answer-color);
     font-weight: 600;
-    font-size: 1.05rem;
+    font-size: 1.25rem;
+    line-height: 1.6;
     white-space: pre-line;
     opacity: 0;
     transform: translateY(10px);
@@ -524,7 +526,7 @@ body {
 }
 
 .modal-body .modal-question-text {
-    font-size: calc(2.2rem + 1.2vw); /* 字體縮小為 0.8 倍 */
+    font-size: calc(2.4rem + 1.35vw); /* 字體改為 0.9 倍 */
     font-weight: 500;
     line-height: 1.8;
     color: var(--text-main);
@@ -534,7 +536,7 @@ body {
 
 /* 放大數學方程式 (KaTeX) */
 .modal-body .katex {
-    font-size: calc(1.3em + 1vw);
+    font-size: calc(1.5em + 1.1vw);
 }
 
 .modal-body .modal-question-image {
@@ -557,7 +559,7 @@ body {
 }
 
 .modal-body .modal-answer-text {
-    font-size: calc(1.9rem + 1.2vw); /* 字體縮小為 0.8 倍 */
+    font-size: calc(2.2rem + 1.35vw); /* 字體改為 0.9 倍 */
     font-weight: 600;
     color: var(--answer-color);
     line-height: 1.8;
