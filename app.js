@@ -6,11 +6,85 @@ document.addEventListener('DOMContentLoaded', () => {
     const unitTitle = document.getElementById('unitTitle');
     const sectionTitle = document.getElementById('sectionTitle');
     const toggleAllBtn = document.getElementById('toggleAllBtn');
+    const appContainer = document.getElementById('appContainer');
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const sidebarToggleIcon = document.getElementById('sidebarToggleIcon');
+
+    // Modal elements
+    const questionModal = document.getElementById('questionModal');
+    const modalBody = document.getElementById('modalBody');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
 
     let currentSectionData = null;
     let allAnswersVisible = false;
 
-    // Initialize sidebar
+    // ─── Sidebar Toggle ───────────────────────────────────────────────
+    sidebarToggleBtn.addEventListener('click', () => {
+        appContainer.classList.toggle('sidebar-collapsed');
+        sidebarToggleIcon.textContent = appContainer.classList.contains('sidebar-collapsed') ? '▶' : '◀';
+    });
+
+    // ─── Modal Logic ──────────────────────────────────────────────────
+    function openModal(q, index) {
+        modalBody.innerHTML = `
+            <div class="modal-question-number">${index + 1}</div>
+            <div class="modal-question-text">${q.text}</div>
+            ${q.image ? `<img src="${q.image}" class="modal-question-image" alt="" onerror="this.style.display='none'" />` : ''}
+            <div class="modal-answer-section">
+                <button class="btn btn-outline modal-toggle-btn">顯示答案</button>
+                <div class="modal-answer-text">${q.answer || ''}</div>
+                ${q.answerImage ? `<img src="${q.answerImage}" class="modal-answer-image" alt="" onerror="this.style.display='none'" />` : ''}
+            </div>
+        `;
+
+        // Render math
+        if (window.renderMathInElement) {
+            window.renderMathInElement(modalBody, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false},
+                    {left: "\\(", right: "\\)", display: false}
+                ],
+                throwOnError: false
+            });
+        }
+
+        // Answer toggle inside modal
+        const toggleBtn = modalBody.querySelector('.modal-toggle-btn');
+        const answerText = modalBody.querySelector('.modal-answer-text');
+        const answerImg = modalBody.querySelector('.modal-answer-image');
+
+        toggleBtn.addEventListener('click', () => {
+            const visible = answerText.classList.contains('visible');
+            if (visible) {
+                answerText.classList.remove('visible');
+                if (answerImg) answerImg.classList.remove('visible');
+                toggleBtn.textContent = '顯示答案';
+            } else {
+                answerText.classList.add('visible');
+                if (answerImg) answerImg.classList.add('visible');
+                toggleBtn.textContent = '隱藏答案';
+            }
+        });
+
+        questionModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        questionModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    modalCloseBtn.addEventListener('click', closeModal);
+    questionModal.addEventListener('click', (e) => {
+        if (e.target === questionModal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    // ─── Sidebar Nav ──────────────────────────────────────────────────
     function renderSidebar() {
         sidebarNav.innerHTML = '';
         
@@ -54,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load a specific section
+    // ─── Load Section ────────────────────────────────────────────────
     function loadSection(unitData, sectionData) {
         currentSectionData = sectionData;
         allAnswersVisible = false;
@@ -98,11 +172,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
+            // Click card → open modal (but not if clicking the answer button)
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.toggle-answer-btn')) return;
+                openModal(q, index);
+            });
+
             // Individual toggle
             const btn = card.querySelector('.toggle-answer-btn');
             const answerText = card.querySelector('.answer-text');
             
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Don't trigger card click
                 const isVisible = answerText.classList.contains('visible');
                 if (isVisible) {
                     answerText.classList.remove('visible');
@@ -131,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Toggle all answers
+    // ─── Toggle All Answers ──────────────────────────────────────────
     toggleAllBtn.addEventListener('click', () => {
         const answerTexts = document.querySelectorAll('.answer-text');
         const toggleBtns = document.querySelectorAll('.toggle-answer-btn');
@@ -167,10 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleAllBtn.textContent = '顯示全部答案';
             toggleAllBtn.classList.replace('btn-outline', 'btn-primary');
         }
-        // If partially visible, keep the current state of global button, 
-        // or we could add a "mixed" state, but simple is better here.
     }
 
-    // Initialize
+    // ─── Initialize ──────────────────────────────────────────────────
     renderSidebar();
 });
