@@ -88,7 +88,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderSidebar() {
         sidebarNav.innerHTML = '';
         
-        worksheetData.forEach((unitData, unitIndex) => {
+        // Filter data based on URL parameter ?level=N
+        let activeData = worksheetData;
+        const urlParams = new URLSearchParams(window.location.search);
+        const level = parseInt(urlParams.get('level'));
+        if (!isNaN(level) && level > 0 && level <= worksheetData.length) {
+            activeData = worksheetData.slice(0, level);
+        }
+
+        activeData.forEach((unitData, unitIndex) => {
             const unitEl = document.createElement('div');
             unitEl.className = 'nav-unit';
             if (unitIndex === 0) unitEl.classList.add('active'); // First unit open by default
