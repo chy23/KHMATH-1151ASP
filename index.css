@@ -540,7 +540,9 @@ body {
 }
 
 .modal-body .modal-question-image {
+    width: 100%;
     max-width: 100%;
+    height: auto;
     border-radius: var(--radius-md);
     margin-bottom: 38px;
     display: block;
@@ -572,7 +574,9 @@ body {
 }
 
 .modal-body .modal-answer-image {
+    width: 100%;
     max-width: 100%;
+    height: auto;
     border-radius: var(--radius-md);
     margin-top: 20px;
     display: none;
