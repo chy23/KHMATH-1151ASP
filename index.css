@@ -48,12 +48,55 @@ body {
 /* Sidebar Styles */
 .sidebar {
     width: 280px;
+    min-width: 280px;
     background: var(--bg-card);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow-sm);
     z-index: 10;
+    transition: width var(--transition-base), min-width var(--transition-base), opacity var(--transition-base);
+    overflow: hidden;
+}
+
+/* Sidebar collapsed state */
+.app-container.sidebar-collapsed .sidebar {
+    width: 0;
+    min-width: 0;
+    opacity: 0;
+    border-right: none;
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle-btn {
+    position: relative;
+    z-index: 20;
+    width: 20px;
+    min-width: 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    transition: background-color var(--transition-fast), width var(--transition-base);
+    box-shadow: 2px 0 6px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+}
+
+.sidebar-toggle-btn:hover {
+    background: var(--primary-hover);
+}
+
+.app-container.sidebar-collapsed .sidebar-toggle-btn #sidebarToggleIcon {
+    transform: rotate(180deg);
+}
+
+#sidebarToggleIcon {
+    display: inline-block;
+    transition: transform var(--transition-base);
 }
 
 .sidebar-header {
@@ -402,3 +445,142 @@ body {
     bottom: 20px;
     right: 30px;
 }
+
+/* === QUESTION MODAL === */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+    max-width: 780px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 40px;
+    transform: scale(0.92) translateY(20px);
+    transition: transform var(--transition-base);
+}
+
+.modal-overlay.active .modal-card {
+    transform: scale(1) translateY(0);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-main);
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: background var(--transition-fast), color var(--transition-fast);
+    z-index: 1;
+}
+
+.modal-close-btn:hover {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.modal-body .modal-question-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.modal-body .modal-question-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.8;
+    color: var(--text-main);
+    margin-bottom: 20px;
+    white-space: pre-line;
+}
+
+.modal-body .modal-question-image {
+    max-width: 100%;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    display: block;
+}
+
+.modal-body .modal-answer-section {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+    margin-top: 10px;
+}
+
+.modal-body .modal-toggle-btn {
+    margin-bottom: 16px;
+}
+
+.modal-body .modal-answer-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--answer-color);
+    line-height: 1.8;
+    white-space: pre-line;
+    display: none;
+}
+
+.modal-body .modal-answer-text.visible {
+    display: block;
+}
+
+.modal-body .modal-answer-image {
+    max-width: 100%;
+    border-radius: var(--radius-md);
+    margin-top: 12px;
+    display: none;
+}
+
+.modal-body .modal-answer-image.visible {
+    display: block;
+}
+
+/* Cursor hint on question card */
+.question-card {
+    cursor: pointer;
+}
+
+.question-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px) scale(1.01);
+    border-color: var(--primary);
+}
+
