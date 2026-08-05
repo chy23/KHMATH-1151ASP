@@ -429,23 +429,23 @@ body {
 /* Watermark styles */
 .watermark {
     position: fixed;
-    color: #9ca3af; /* Gray-400 */
-    font-size: 1.5rem;
+    color: grey;
+    font-size: 18pt;
     font-weight: 700;
-    opacity: 0.3;
+    opacity: 0.25;
     pointer-events: none;
     z-index: 1000;
     user-select: none;
 }
 
 .watermark-top-right {
-    top: 20px;
-    right: 30px;
+    top: 110px; /* 下移避免與頂部標題或按鈕重疊 */
+    right: 40px;
 }
 
 .watermark-bottom-right {
-    bottom: 20px;
-    right: 30px;
+    bottom: 30px;
+    right: 40px;
 }
 
 /* === QUESTION MODAL === */
