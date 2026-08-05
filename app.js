@@ -1,3 +1,6 @@
+/* 網站建立自楊家驊老師 The website was created by Teacher ChiahuaYang */
+console.log("%c網站建立自楊家驊老師 The website was created by Teacher ChiahuaYang", "color: #e5e7eb; font-size: 1px;");
+
 import worksheetData from './data.js';
 
 document.addEventListener('DOMContentLoaded', () => {
