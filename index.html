@@ -25,6 +25,9 @@
                     <span style="color: #FF8A8A; font-weight: 700;">切勿用於商業行為</span>
                 </div>
             </div>
+            <div class="sidebar-tools" style="padding: 0 24px 20px; display:flex; justify-content:center;">
+        <button id="themeToggleBtn" class="btn btn-outline" style="width:100%;">切換深淺模式 🌞</button>
+    </div>
             <nav class="sidebar-nav" id="sidebarNav">
                 <!-- Navigation items will be injected here via JS -->
             </nav>
@@ -67,7 +70,12 @@
     <div class="modal-overlay" id="questionModal">
         <div class="modal-card" id="modalCard">
             <button class="modal-close-btn" id="modalCloseBtn">✕</button>
-            <div class="modal-body" id="modalBody">
+            <div class="modal-tools" style="padding: 10px 24px; border-bottom: 1px solid var(--border-color); display:flex; gap:10px; justify-content:flex-end;">
+                <button id="drawToggleBtn" class="btn btn-outline">✍️ 開啟塗鴉板</button>
+                <button id="clearDrawBtn" class="btn btn-outline" style="display:none;">🗑️ 清除畫布</button>
+            </div>
+            <canvas id="scratchpadCanvas" style="position:absolute; top:0; left:0; pointer-events:none; z-index:5;"></canvas>
+            <div class="modal-body" id="modalBody" style="position:relative; z-index:1;">
                 <!-- Content injected by JS -->
             </div>
         </div>

@@ -11,6 +11,98 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleAllBtn = document.getElementById('toggleAllBtn');
     const appContainer = document.getElementById('appContainer');
     const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const isDark = localStorage.getItem('khmath_theme') === 'dark';
+    if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+    themeToggleBtn.innerHTML = isDark ? '切換深淺模式 🌙' : '切換深淺模式 🌞';
+    themeToggleBtn.addEventListener('click', () => {
+        const currentIsDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (currentIsDark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('khmath_theme', 'light');
+            themeToggleBtn.innerHTML = '切換深淺模式 🌞';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('khmath_theme', 'dark');
+            themeToggleBtn.innerHTML = '切換深淺模式 🌙';
+        }
+    });
+    
+    // Canvas logic
+    const scratchpadCanvas = document.getElementById('scratchpadCanvas');
+    const drawToggleBtn = document.getElementById('drawToggleBtn');
+    const clearDrawBtn = document.getElementById('clearDrawBtn');
+    let isDrawing = false;
+    let isDrawMode = false;
+    let ctx = scratchpadCanvas.getContext('2d');
+    
+    function resizeCanvas() {
+        const modalCard = document.getElementById('modalCard');
+        scratchpadCanvas.width = modalCard.clientWidth;
+        scratchpadCanvas.height = modalCard.clientHeight;
+        ctx.strokeStyle = document.documentElement.getAttribute('data-theme') === 'dark' ? '#34d399' : '#ef4444';
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+    }
+    window.addEventListener('resize', () => { if (isDrawMode) resizeCanvas(); });
+    
+    drawToggleBtn.addEventListener('click', () => {
+        isDrawMode = !isDrawMode;
+        if (isDrawMode) {
+            drawToggleBtn.innerHTML = '✍️ 關閉塗鴉板';
+            drawToggleBtn.classList.add('btn-primary');
+            drawToggleBtn.classList.remove('btn-outline');
+            clearDrawBtn.style.display = 'inline-block';
+            scratchpadCanvas.style.pointerEvents = 'auto';
+            resizeCanvas();
+        } else {
+            drawToggleBtn.innerHTML = '✍️ 開啟塗鴉板';
+            drawToggleBtn.classList.remove('btn-primary');
+            drawToggleBtn.classList.add('btn-outline');
+            clearDrawBtn.style.display = 'none';
+            scratchpadCanvas.style.pointerEvents = 'none';
+        }
+    });
+    
+    clearDrawBtn.addEventListener('click', () => {
+        ctx.clearRect(0, 0, scratchpadCanvas.width, scratchpadCanvas.height);
+    });
+    
+    function getPos(e) {
+        const rect = scratchpadCanvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+    
+    const startDraw = (e) => {
+        if (!isDrawMode) return;
+        isDrawing = true;
+        const pos = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+        e.preventDefault();
+    };
+    const draw = (e) => {
+        if (!isDrawing) return;
+        const pos = getPos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+        e.preventDefault();
+    };
+    const endDraw = () => {
+        isDrawing = false;
+        ctx.beginPath();
+    };
+    
+    scratchpadCanvas.addEventListener('mousedown', startDraw);
+    scratchpadCanvas.addEventListener('mousemove', draw);
+    scratchpadCanvas.addEventListener('mouseup', endDraw);
+    scratchpadCanvas.addEventListener('mouseout', endDraw);
+    scratchpadCanvas.addEventListener('touchstart', startDraw, {passive: false});
+    scratchpadCanvas.addEventListener('touchmove', draw, {passive: false});
+    scratchpadCanvas.addEventListener('touchend', endDraw);
+
     const sidebarToggleIcon = document.getElementById('sidebarToggleIcon');
 
     // Modal elements
@@ -28,15 +120,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ─── Modal Logic ──────────────────────────────────────────────────
-    function openModal(q, index) {
+    function openModal(q, index, uniqueId, card) {
+        if (ctx) ctx.clearRect(0, 0, scratchpadCanvas.width, scratchpadCanvas.height);
+        document.getElementById('modalCard').dataset.currentUniqueId = uniqueId;
+        document.getElementById('modalCard').dataset.currentCardIndex = index;
         modalBody.innerHTML = `
             <div class="modal-question-number">${index + 1}</div>
             <div class="modal-question-text">${q.text}</div>
-            ${q.image ? `<img src="${q.image}" class="modal-question-image" alt="" onerror="this.style.display='none'" />` : ''}
+            ${q.image ? `<img src="${q.image}" class="modal-question-image" alt="" loading="lazy" onerror="this.style.display='none'" />` : ''}
             <div class="modal-answer-section">
                 <button class="btn btn-outline modal-toggle-btn">顯示答案</button>
                 <div class="modal-answer-text">${q.answer || ''}</div>
-                ${q.answerImage ? `<img src="${q.answerImage}" class="modal-answer-image" alt="" onerror="this.style.display='none'" />` : ''}
+                ${q.answerImage ? `<img src="${q.answerImage}" class="modal-answer-image" alt="" loading="lazy" onerror="this.style.display='none'" />` : ''}
             </div>
         `;
 
@@ -165,20 +260,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         sectionData.questions.forEach((q, index) => {
+            const uniqueId = `q-${unitIndex}-${sectionIndex}-${q.id}`;
+            const isComp = getCompleted().includes(uniqueId);
             const card = document.createElement('div');
-            card.className = 'question-card';
+            card.className = 'question-card' + (isComp ? ' completed' : '');
+            card.dataset.id = uniqueId;
             
             card.innerHTML = `
                 <div class="question-header">
-                    <div class="question-number">${index + 1}</div>
+                    <div class="question-number">${index + 1}</div>${isComp ? '<span class="completion-mark" style="margin-left:10px;">✅</span>' : ''}
                     <div class="question-text">${q.text}</div>
                 </div>
-                ${q.image ? `<img src="${q.image}" class="question-image" alt="" onerror="this.style.display='none'" />` : ''}
+                ${q.image ? `<img src="${q.image}" class="question-image" alt="" loading="lazy" onerror="this.style.display='none'" />` : ''}
                 <div class="answer-area">
                     <button class="btn btn-outline toggle-answer-btn">顯示答案</button>
                     <div class="answer-text">
                         ${q.answer}
-                        ${q.answerImage ? `<img src="${q.answerImage}" class="answer-image" alt="" onerror="this.style.display='none'" />` : ''}
+                        ${q.answerImage ? `<img src="${q.answerImage}" class="answer-image" alt="" loading="lazy" onerror="this.style.display='none'" />` : ''}
                     </div>
                 </div>
             `;
@@ -186,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Click card → open modal (but not if clicking the answer button)
             card.addEventListener('click', (e) => {
                 if (e.target.closest('.toggle-answer-btn')) return;
-                openModal(q, index);
+                openModal(q, index, uniqueId, card);
             });
 
             // Individual toggle
@@ -202,6 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     answerText.classList.add('visible');
                     btn.textContent = '隱藏答案';
+                    markCompleted(uniqueId, card);
                 }
                 
                 updateToggleAllButtonState();
