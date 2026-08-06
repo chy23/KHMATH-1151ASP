@@ -113,6 +113,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSectionData = null;
     let allAnswersVisible = false;
 
+    function getCompleted() { return JSON.parse(localStorage.getItem('khmath_completed') || '[]'); }
+    function markCompleted(id, card) {
+        let comp = getCompleted();
+        if (!comp.includes(id)) {
+            comp.push(id);
+            localStorage.setItem('khmath_completed', JSON.stringify(comp));
+            card.classList.add('completed');
+            
+            // Add checkmark explicitly if not present
+            if (!card.querySelector('.completion-mark')) {
+                const numBox = card.querySelector('.question-header');
+                const mark = document.createElement('span');
+                mark.className = 'completion-mark';
+                mark.innerHTML = '✅';
+                mark.style.marginLeft = '10px';
+                numBox.appendChild(mark);
+            }
+        }
+    }
+
     // ─── Sidebar Toggle ───────────────────────────────────────────────
     sidebarToggleBtn.addEventListener('click', () => {
         appContainer.classList.toggle('sidebar-collapsed');
@@ -162,6 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 answerText.classList.add('visible');
                 if (answerImg) answerImg.classList.add('visible');
                 toggleBtn.textContent = '隱藏答案';
+                
+                const curId = document.getElementById('modalCard').dataset.currentUniqueId;
+                const cardList = worksheetContainer.querySelectorAll('.question-card');
+                const cIndex = document.getElementById('modalCard').dataset.currentCardIndex;
+                if (cIndex !== undefined && cardList[cIndex]) markCompleted(curId, cardList[cIndex]);
             }
         });
 
@@ -249,6 +274,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Render questions
         worksheetContainer.innerHTML = '';
         
+        // Trigger fade-in animation
+        worksheetContainer.classList.remove('fade-in');
+        void worksheetContainer.offsetWidth; // trigger reflow
+        worksheetContainer.classList.add('fade-in');
+        
         if (!sectionData.questions || sectionData.questions.length === 0) {
             worksheetContainer.innerHTML = `
                 <div class="empty-state">
@@ -260,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         sectionData.questions.forEach((q, index) => {
-            const uniqueId = `q-${unitIndex}-${sectionIndex}-${q.id}`;
+            const uniqueId = `q-${unitData.unitName}-${sectionData.section}-${q.id}`;
             const isComp = getCompleted().includes(uniqueId);
             const card = document.createElement('div');
             card.className = 'question-card' + (isComp ? ' completed' : '');
